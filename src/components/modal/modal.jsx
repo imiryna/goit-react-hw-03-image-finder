@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Overlay, ModalWindow } from './modal.styled';
 
 export class Modal extends Component {
-  state = {
-    show: false,
-  };
-
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -15,18 +11,18 @@ export class Modal extends Component {
 
   handleKeyDown = event => {
     if (event.code === 'Escape') {
-      this.props.onClose();
+      this.props.toggleModal(false, '');
     }
   };
 
   handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.onClose();
+      this.props.toggleModal(false, '');
     }
   };
 
   render() {
-    if (!this.props.isShowing) {
+    if (!this.props.showModal) {
       return null;
     }
     return (

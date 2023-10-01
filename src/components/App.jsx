@@ -36,8 +36,9 @@ export class App extends Component {
           changeShowModal={this.changeShowModal}
         />
         <Modal
-          isShowing={this.state.showModal}
+          showModal={this.state.showModal}
           longUrl={this.state.currentImageInModal}
+          toggleModal={this.changeShowModal}
         />
       </>
     );
