@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import * as api from '../services/api';
 import { fetchImageGallery } from '../services/api';
 import { Searchbar } from './searchbar/searchbar';
 import { ImageGallery } from './imageGallery/imageGallery';
 import { Modal } from './modal/modal';
+import { Loader } from './loader/loader';
 
 export class App extends Component {
   state = {
@@ -14,8 +16,18 @@ export class App extends Component {
   };
 
   fetchGallery = searchTerm => {
+    this.setState({ isLoading: true });
     fetchImageGallery(searchTerm).then(res => {
-      this.setState({ pictures: res.hits });
+      try {
+        const normalizedImages = api.normalizedImages(res.hits);
+        this.setState({
+          pictures: normalizedImages,
+        });
+      } catch (error) {
+        this.setState({ error: 'Something went wrong!' });
+      } finally {
+        this.setState({ isLoading: false });
+      }
     });
   };
 
@@ -30,9 +42,10 @@ export class App extends Component {
     return (
       <>
         <Searchbar getGallery={this.fetchGallery} />
+        {this.state.isLoading && <Loader />}
         <ImageGallery
           dataPictures={this.state.pictures}
-          loader={this.state.isLoading}
+          // loader={this.state.isLoading}
           changeShowModal={this.changeShowModal}
         />
         <Modal

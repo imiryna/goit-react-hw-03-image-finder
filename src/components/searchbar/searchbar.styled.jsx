@@ -21,7 +21,7 @@ export const SearchFormCss = styled.form`
 `;
 
 export const SearchInputCss = styled.input`
-  width: 300px;
+  width: 200px;
   height: 30px;
   padding: 5px 5px 5px 15px;
   font-size: 18px;
@@ -33,6 +33,10 @@ export const SearchInputCss = styled.input`
   &::placeholder {
     font: inherit;
     color: #cccccc;
+  }
+
+  @media (min-width: 1200px) {
+    width: 300px;
   }
 `;
 

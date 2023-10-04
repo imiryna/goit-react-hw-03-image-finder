@@ -24,11 +24,15 @@ export class Searchbar extends Component {
       );
     }
   };
+  handleKeyPressed = (e) => {
+   if (e.key === "Enter") {
+     this.handleClick();
+  }
 
   render() {
     return (
       <HeaderCss>
-        <SearchFormCss>
+        <SearchFormCss onKeyDown={this.handleKeyPressed}>
           <SearchButtonCss type="button" onClick={this.handleClick}>
             <span>Search</span>
           </SearchButtonCss>

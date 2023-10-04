@@ -16,3 +16,7 @@ export const fetchImageGallery = async searchName => {
   const { data } = await axios.get(URL, { params: paramsRequest });
   return data;
 };
+export const normalizedImages = imagesArray =>
+  imagesArray.map(({ id, tags, webformatURL, largeImageURL }) => {
+    return { id, tags, webformatURL, largeImageURL };
+  });
