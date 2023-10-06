@@ -34,7 +34,7 @@ export class Searchbar extends Component {
   render() {
     return (
       <HeaderCss>
-        <SearchFormCss onKeyDown={this.handleKeyPressed}>
+        <SearchFormCss onSubmit={this.handleKeyPressed}>
           <SearchButtonCss type="button" onClick={this.handleClick}>
             <span>Search</span>
           </SearchButtonCss>
