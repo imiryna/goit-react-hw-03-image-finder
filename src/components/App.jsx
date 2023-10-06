@@ -16,7 +16,14 @@ export class App extends Component {
     currentImageInModal: '',
     page: 1,
     searchTerm: '',
+    total: 0,
   };
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.page !== this.state.page) {
+      this.fetchImageByPage(this.state.searchTerm, this.state.page);
+    }
+  }
 
   fetchGallery = searchTerm => {
     this.setState({
@@ -30,13 +37,13 @@ export class App extends Component {
   fetchImageByPage = (searchTerm, page) => {
     fetchImageGallery(searchTerm, page).then(res => {
       try {
+        console.log(`res pages: ${page}`);
+        console.log(res);
         const normalizedImages = api.normalizedImages(res.hits);
         this.setState(prevState => ({
           pictures: [...prevState.pictures, ...normalizedImages],
-          page: this.isLastPage(res.totalHits)
-            ? prevState.page
-            : prevState.page + 1,
           searchTerm: searchTerm,
+          total: res.totalHits,
         }));
       } catch (error) {
         this.setState({ error: 'Something went wrong!' });
@@ -44,11 +51,6 @@ export class App extends Component {
         this.setState({ isLoading: false });
       }
     });
-  };
-
-  isLastPage = totalImg => {
-    const totalPage = Math.ceil(totalImg / 12);
-    return this.state.page === totalPage;
   };
 
   changeShowModal = (newState, imgUrl) => {
@@ -59,7 +61,9 @@ export class App extends Component {
   };
 
   loadMore = () => {
-    this.fetchImageByPage(this.state.searchTerm, this.state.page);
+    this.setState(({ page }) => ({
+      page: page + 1,
+    }));
   };
 
   render() {
@@ -90,7 +94,8 @@ export class App extends Component {
           longUrl={this.state.currentImageInModal}
           toggleModal={this.changeShowModal}
         />
-        {this.isLastPage() || !this.state.searchTerm ? null : (
+        {this.state.pictures.length === 0 ||
+        this.state.pictures.length === this.state.total ? null : (
           <Button onClick={this.loadMore} />
         )}
       </>

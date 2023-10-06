@@ -4,6 +4,7 @@ const URL = 'https://pixabay.com/api/';
 const API_KEY = '38926038-9764a0475e6c51ddc0f5eb34a';
 
 export const fetchImageGallery = async (searchName, page_number) => {
+  console.log(page_number);
   const paramsRequest = {
     key: API_KEY,
     q: searchName,
